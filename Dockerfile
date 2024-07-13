@@ -1,4 +1,4 @@
-FROM node:20-alpine AS micboard_frontend
+FROM node:20-bullseye AS micboard_frontend
 WORKDIR /home/node/app
 COPY package.json package.json
 RUN npm install
