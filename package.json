@@ -21,7 +21,7 @@
   "homepage": "https://github.com/karlcswanson/micboard",
   "dependencies": {
     "@babel/core": "7.16.7",
-    "@babel/preset-env": "7.16.8",
+    "@babel/preset-env": "7.24.8",
     "@ibm/plex": "6.0.0",
     "@shopify/draggable": "1.0.0-beta.8",
     "bootstrap": "5.1.3",
