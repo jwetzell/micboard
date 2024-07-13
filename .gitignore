@@ -8,14 +8,14 @@ static/serveit.py
 mictray/dist/*
 dist/*
 mictray/build/*
-build/*
+build
 !build/*.png
 .eggs/*
 static/gifs/*
 *.mp4
 *.gif
 static/backgrounds/*
-node_modules/*
+node_modules
 DCIDMap.xml
 .python-version
 static/data2.json
