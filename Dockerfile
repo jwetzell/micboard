@@ -1,4 +1,4 @@
-FROM node:18-alpine AS micboard_frontend
+FROM node:20-alpine AS micboard_frontend
 WORKDIR /home/node/app
 COPY . .
 RUN npm install
