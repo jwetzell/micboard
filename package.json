@@ -6,7 +6,9 @@
   "scripts": {
     "server": "python py/micboard.py",
     "build": "webpack --progress --config=webpack.config.js",
-    "static": "python -m http.server 8058"
+    "static": "python -m http.server 8058",
+    "lint": "eslint js/",
+    "lint:fix": "eslint js/ --fix"
   },
   "private": true,
   "license": "MIT",
