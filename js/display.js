@@ -7,25 +7,22 @@ function swapClass(selector, currentClass, newClass) {
   selector.classList.add(newClass);
 }
 
-
 export function setBackground(mode) {
   micboard.backgroundMode = mode;
-  const elements = document.querySelectorAll('#micboard .mic_name')
+  const elements = document.querySelectorAll('#micboard .mic_name');
   Array.from(elements).forEach((e) => {
-    e.style.backgroundImage = ''
-    e.style.backgroundSize = ''
-  })
+    e.style.backgroundImage = '';
+    e.style.backgroundSize = '';
+  });
   updateGIFBackgrounds();
   updateHash();
 }
-
 
 export function setDisplayMode(mode) {
   const selector = document.getElementById('container');
   swapClass(selector, micboard.displayMode, mode);
   micboard.displayMode = mode;
 }
-
 
 export function toggleDisplayMode() {
   switch (micboard.displayMode) {
@@ -40,7 +37,6 @@ export function toggleDisplayMode() {
   updateHash();
 }
 
-
 export function toggleImageBackground() {
   if (micboard.displayMode === 'tvmode') {
     switch (micboard.backgroundMode) {
@@ -54,7 +50,6 @@ export function toggleImageBackground() {
     }
   }
 }
-
 
 export function toggleVideoBackground() {
   if (micboard.displayMode === 'tvmode') {
@@ -77,7 +72,6 @@ export function setInfoDrawer(mode) {
   setDisplayMode('tvmode');
   updateHash();
 }
-
 
 export function toggleInfoDrawer() {
   switch (micboard.infoDrawerMode) {

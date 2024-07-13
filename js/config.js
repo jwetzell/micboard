@@ -1,5 +1,3 @@
-'use strict';
-
 import { Sortable, Plugins } from '@shopify/draggable';
 
 import { micboard, updateHash } from './app.js';
@@ -16,7 +14,6 @@ function updateEditEntry(slotSelector, data) {
   console.log(data);
 }
 
-
 function getMaxSlot() {
   let max = 0;
   micboard.config.slots.forEach((e) => {
@@ -27,13 +24,12 @@ function getMaxSlot() {
   return max;
 }
 
-
 function updateSlotID() {
   const configList = document.querySelectorAll('#editor_holder .cfg-row');
   let i = 1;
   configList.forEach((t) => {
-    t.querySelector('.slot-number label').innerHTML = 'slot ' + i;
-    t.id = 'editslot-' + i;
+    t.querySelector('.slot-number label').innerHTML = `slot ${i}`;
+    t.id = `editslot-${i}`;
     i += 1;
   });
 }
@@ -43,7 +39,7 @@ function dragSetup() {
   const containers = document.querySelectorAll(containerSelector);
 
   if (containers.length === 0) {
-    return false;
+    return;
   }
 
   const sortable = new Sortable(containers, {
@@ -71,18 +67,17 @@ function renderSlotList() {
 
   for (let i = 1; i <= slotCount; i += 1) {
     t = document.getElementById('config-slot-template').content.cloneNode(true);
-    t.querySelector('label').innerHTML = 'slot ' + i;
-    t.querySelector('.cfg-row').id = 'editslot-' + i;
+    t.querySelector('label').innerHTML = `slot ${i}`;
+    t.querySelector('.cfg-row').id = `editslot-${i}`;
     document.getElementById('editor_holder').append(t);
   }
 
   config.forEach((e) => {
-    const slotID = 'editslot-' + e.slot;
+    const slotID = `editslot-${e.slot}`;
     t = document.getElementById(slotID);
     updateEditEntry(t, e);
   });
 }
-
 
 function discoverFilter(item, currentSlotList) {
   let out = true;
@@ -92,26 +87,6 @@ function discoverFilter(item, currentSlotList) {
     }
   });
   return out;
-}
-
-function renderDiscoverdDeviceList() {
-  const discovered = micboard.discovered;
-  const currentSlotList = generateJSONConfig();
-
-  let t;
-
-  document.getElementById('discovered_list').innerHTML = '';
-
-  discovered.forEach((e) => {
-    for (let i = 1; i <= e.channels; i += 1) {
-      e.channel = i;
-      if (discoverFilter(e, currentSlotList)) {
-        t = document.getElementById('config-slot-template').content.cloneNode(true);
-        updateEditEntry(t, e);
-        document.getElementById('discovered_list').append(t);
-      }
-    }
-  });
 }
 
 function generateJSONConfig() {
@@ -139,62 +114,79 @@ function generateJSONConfig() {
   return slotList;
 }
 
+function renderDiscoverdDeviceList() {
+  const { discovered } = micboard;
+  const currentSlotList = generateJSONConfig();
+
+  let t;
+
+  document.getElementById('discovered_list').innerHTML = '';
+
+  discovered.forEach((e) => {
+    for (let i = 1; i <= e.channels; i += 1) {
+      e.channel = i;
+      if (discoverFilter(e, currentSlotList)) {
+        t = document.getElementById('config-slot-template').content.cloneNode(true);
+        updateEditEntry(t, e);
+        document.getElementById('discovered_list').append(t);
+      }
+    }
+  });
+}
 
 function addAllDiscoveredDevices() {
   const devices = document.querySelectorAll('#discovered_list .cfg-row');
-  const cfg_list = document.getElementById('editor_holder');
-  const top = cfg_list.querySelector('.cfg-row');
+  const cfgList = document.getElementById('editor_holder');
+  const top = cfgList.querySelector('.cfg-row');
 
   devices.forEach((e) => {
-    cfg_list.insertBefore(e, top);
+    cfgList.insertBefore(e, top);
   });
   updateSlotID();
 }
 
 function updateHiddenSlots() {
-  const cfgRows = document.querySelectorAll('#editor_holder .cfg-row')
+  const cfgRows = document.querySelectorAll('#editor_holder .cfg-row');
   Array.from(cfgRows).forEach((e) => {
-    const type = e.querySelector('.cfg-type').value
-    if ( type === 'offline' || type === '') {
-      e.querySelector('.cfg-ip').style.display = "none"
-      e.querySelector('.cfg-channel').style.display = "none"
+    const type = e.querySelector('.cfg-type').value;
+    if (type === 'offline' || type === '') {
+      e.querySelector('.cfg-ip').style.display = 'none';
+      e.querySelector('.cfg-channel').style.display = 'none';
     } else {
-      e.querySelector('.cfg-ip').style.display = "block"
-      e.querySelector('.cfg-channel').style.display = "block"
+      e.querySelector('.cfg-ip').style.display = 'block';
+      e.querySelector('.cfg-channel').style.display = 'block';
     }
-  })
+  });
 }
 
 export function initConfigEditor() {
   if (micboard.settingsMode === 'CONFIG') {
-    console.log('oh that explains it!')
+    console.log('oh that explains it!');
     return;
   }
 
   micboard.settingsMode = 'CONFIG';
   updateHash();
-  document.getElementById('micboard').style.display = "none"
-  document.querySelector('.settings').style.display = "block"
+  document.getElementById('micboard').style.display = 'none';
+  document.querySelector('.settings').style.display = 'block';
 
   renderSlotList();
   renderDiscoverdDeviceList();
 
   dragSetup();
 
-
-
   updateHiddenSlots();
-  
-  const cfgTypeInputs = document.getElementsByClassName('cfg-type')
+
+  const cfgTypeInputs = document.getElementsByClassName('cfg-type');
   Array.from(cfgTypeInputs).forEach((e) => {
-    e.addEventListener('change', () => updateHiddenSlots())
-  })
+    e.addEventListener('change', () => updateHiddenSlots());
+  });
 
   document.getElementById('add-discovered').addEventListener('click', () => {
     addAllDiscoveredDevices();
   });
 
-  document.getElementById('save').addEventListener('click', ()=> {
+  document.getElementById('save').addEventListener('click', () => {
     const data = generateJSONConfig();
     const url = 'api/config';
     console.log(data);
@@ -205,18 +197,19 @@ export function initConfigEditor() {
     });
   });
 
-  const delBtns = document.querySelectorAll('#editor_holder .del-btn')
+  const delBtns = document.querySelectorAll('#editor_holder .del-btn');
   Array.from(delBtns).forEach((btn) => {
     btn.addEventListener('click', (e) => {
-      const row = e.target.closest('.cfg-row').remove()
+      const row = e.target.closest('.cfg-row');
+      row.remove();
       updateSlotID();
       renderDiscoverdDeviceList();
-    })
+    });
   });
 
   document.getElementById('clear-config').addEventListener('click', () => {
-    const cfg_list = document.querySelectorAll('#editor_holder .cfg-row')
-    Array.from(cfg_list).forEach(e => e.remove())
+    const cfgList = document.querySelectorAll('#editor_holder .cfg-row');
+    Array.from(cfgList).forEach((e) => e.remove());
     let t;
     for (let i = 0; i < 4; i += 1) {
       t = document.getElementById('config-slot-template').content.cloneNode(true);

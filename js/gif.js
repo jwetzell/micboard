@@ -1,5 +1,3 @@
-'use strict';
-
 import { micboard } from './app.js';
 
 export function updateBackground(slotSelector) {
@@ -13,10 +11,10 @@ export function updateBackground(slotSelector) {
   const name = s.getElementsByClassName('name')[0].innerHTML.toLowerCase() + extensions[micboard.backgroundMode];
 
   if (micboard.backgroundMode === 'MP4' && micboard.mp4_list.indexOf(name) > -1) {
-    const style = 'background: url("bg/' + name + '") center; background-size: cover;';
+    const style = `background: url("bg/${name}") center; background-size: cover;`;
     s.setAttribute('style', style);
   } else if (micboard.backgroundMode === 'IMG' && micboard.img_list.indexOf(name) > -1) {
-    const style = 'background: url("bg/' + name + '") center; background-size: cover;';
+    const style = `background: url("bg/${name}") center; background-size: cover;`;
     s.setAttribute('style', style);
   } else {
     s.setAttribute('style', "background-image: ''; background-size: ''");

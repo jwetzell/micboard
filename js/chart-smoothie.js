@@ -1,5 +1,3 @@
-'use strict';
-
 import { TimeSeries, SmoothieChart } from 'smoothie';
 import { micboard } from './app.js';
 
@@ -47,7 +45,6 @@ export function updateChart(data) {
     }
   }
 }
-
 
 export function initChart(slotSelector, data) {
   const chart = {};
@@ -102,7 +99,6 @@ export function initChart(slotSelector, data) {
       lineWidth: 2,
     });
   }
-
 
   chart.slotChart.streamTo(slotCanvas, 100);
   return chart;

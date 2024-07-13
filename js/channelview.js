@@ -1,6 +1,4 @@
-'use strict';
-
-import { micboard, ActivateMessageBoard, updateHash } from './app.js';
+import { micboard, updateHash } from './app.js';
 import { updateBackground } from './gif.js';
 import { initChart, charts } from './chart-smoothie.js';
 import { seedTransmitters, autoRandom } from './demodata.js';
@@ -20,38 +18,36 @@ function allSlots() {
   return out;
 }
 
-
 // enables info-drawer toggle for mobile clients
 function infoToggle() {
-  const cols = document.getElementsByClassName('col-sm')
+  const cols = document.getElementsByClassName('col-sm');
   Array.from(cols).forEach((element) => {
     element.addEventListener('click', (e) => {
       if (window.innerWidth <= 980 && micboard.settingsMode !== 'EXTENDED') {
-        const id = e.currentTarget.querySelector('.info-drawer')
-        if (id.style.display == 'none' || id.style.display == '') {
+        const id = e.currentTarget.querySelector('.info-drawer');
+        if (id.style.display === 'none' || id.style.display === '') {
           id.style.display = 'block';
-        } else if (id.style.display == 'block' ){
-          id.style.display = 'none'
+        } else if (id.style.display === 'block') {
+          id.style.display = 'none';
         }
       }
-    })
-  })
+    });
+  });
 
   if (micboard.group === 0) {
-    document.getElementById('go-groupedit').style.display = 'none'
+    document.getElementById('go-groupedit').style.display = 'none';
   } else if (micboard.group !== 0) {
-    document.getElementById('go-groupedit').style.display = 'block'
+    document.getElementById('go-groupedit').style.display = 'block';
   }
 }
 
 function updateTXOffset(slotSelector, data) {
   if (data.tx_offset !== 255) {
-    slotSelector.querySelector('p.offset').innerHTML = data.tx_offset + ' dB';
+    slotSelector.querySelector('p.offset').innerHTML = `${data.tx_offset} dB`;
   } else {
     slotSelector.querySelector('p.offset').innerHTML = '';
   }
 }
-
 
 function updateRuntime(slotSelector, data) {
   slotSelector.querySelector('p.runtime').innerHTML = data.runtime;
@@ -63,8 +59,6 @@ function updatePowerlock(slotSelector, data) {
   } else {
     slotSelector.querySelector('p.powerlock').style.display = 'none';
   }
-
-
 }
 
 function updateQuality(slotSelector, data) {
@@ -81,9 +75,8 @@ function updateQuality(slotSelector, data) {
 }
 
 function updateFrequency(slotSelector, data) {
-  slotSelector.querySelector('p.frequency').innerHTML = data.frequency + ' Hz';
-  if (data.frequency === '000000')
-  {
+  slotSelector.querySelector('p.frequency').innerHTML = `${data.frequency} Hz`;
+  if (data.frequency === '000000') {
     slotSelector.querySelector('.frequency').style.display = 'none';
   } else {
     slotSelector.querySelector('.frequency').style.display = 'block';
@@ -117,10 +110,9 @@ function updateStatus(slotSelector, data) {
   }
 }
 
-
 function updateIP(slotSelector, data) {
   slotSelector.querySelector('p.ip').innerHTML = data.ip;
-  slotSelector.querySelector('p.rxinfo').innerHTML = data.type + ' CH ' + data.channel;
+  slotSelector.querySelector('p.rxinfo').innerHTML = `${data.type} CH ${data.channel}`;
 }
 
 const BatteryTable = {
@@ -151,7 +143,7 @@ function updateBattery(slotSelector, data) {
     let hideChart = false;
 
     if (micboard.groups[micboard.group]) {
-      hideChart = micboard.groups[micboard.group]['hide_charts'];
+      hideChart = micboard.groups[micboard.group].hide_charts;
     }
 
     if (hideChart) {
@@ -163,7 +155,6 @@ function updateBattery(slotSelector, data) {
     }
   }
 }
-
 
 function updateDiversity(slotSelector, data) {
   const div = slotSelector.querySelector('.diversity');
@@ -195,7 +186,6 @@ function updateCheck(data, key, callback) {
     }
   }
 }
-
 
 function updateSelector(slotSelector, data) {
   updateCheck(data, 'id', () => {
@@ -230,7 +220,6 @@ function updateSelector(slotSelector, data) {
     updatePowerlock(slotSelector, data);
   });
 }
-
 
 export function updateViewOnly(slotSelector, data) {
   if ('status' in data) {
@@ -276,7 +265,7 @@ export function updateSlot(data) {
   if (data.slot === 0) {
     return;
   }
-  const slot = 'slot-' + data.slot;
+  const slot = `slot-${data.slot}`;
   const slotSelector = document.getElementById(slot);
   if (slotSelector) {
     updateSelector(slotSelector, data);
@@ -299,7 +288,7 @@ export function renderDisplayList(dl) {
     if (e !== 0) {
       if (typeof tx[e] !== 'undefined') {
         t = document.getElementById('column-template').content.cloneNode(true);
-        t.querySelector('div.col-sm').id = 'slot-' + tx[e].slot;
+        t.querySelector('div.col-sm').id = `slot-${tx[e].slot}`;
         updateViewOnly(t, tx[e]);
         charts[tx[e].slot] = initChart(t, tx[e]);
         document.getElementById('micboard').appendChild(t);
@@ -317,8 +306,8 @@ export function renderDisplayList(dl) {
 
 export function renderGroup(group) {
   if (micboard.settingsMode === 'CONFIG') {
-    document.getElementById('micboard').style.display = 'grid'
-    document.getElementsByClassName('settings')[0].style.display = 'none'
+    document.getElementById('micboard').style.display = 'grid';
+    document.getElementsByClassName('settings')[0].style.display = 'none';
   }
   micboard.group = group;
   updateHash();

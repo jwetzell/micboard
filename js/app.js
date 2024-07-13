@@ -1,12 +1,9 @@
-"use strict";
-
 import { Collapse } from 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import QRCode from 'qrcode';
 import 'whatwg-fetch';
 
-import { autoRandom, seedTransmitters } from './demodata.js';
-import { renderGroup, renderDisplayList, updateSlot } from './channelview.js';
+import { renderGroup } from './channelview.js';
 import { initLiveData } from './data.js';
 import { groupEditToggle, initEditor } from './dnd.js';
 import { slotEditToggle } from './extended.js';
@@ -17,8 +14,7 @@ import { initConfigEditor } from './config.js';
 
 import '../css/colors.scss';
 import '../css/style.scss';
-import '../node_modules/@ibm/plex/scss/ibm-plex.scss';
-
+import '@ibm/plex/scss/ibm-plex.scss';
 
 export const dataURL = 'data.json';
 
@@ -45,13 +41,13 @@ export function ActivateMessageBoard(h1, p) {
     p = 'Could not connect to the micboard server. Please <a href=".">refresh</a> the page.';
   }
 
-  document.getElementById('micboard').style.display = 'none'
+  document.getElementById('micboard').style.display = 'none';
   document.getElementsByClassName('settings')[0].style.display = 'none';
   const eb = document.getElementsByClassName('message-board')[0];
   eb.querySelector('h1').innerHTML = h1;
   eb.querySelector('p').innerHTML = p;
 
-  document.getElementsByClassName('message-board')[0].style.display = 'block'
+  document.getElementsByClassName('message-board')[0].style.display = 'block';
 
   micboard.connectionStatus = 'DISCONNECTED';
 }
@@ -66,11 +62,12 @@ export function generateQR() {
   document.getElementById('largelink').href = url;
   document.getElementById('largelink').innerHTML = url;
   QRCode.toCanvas(document.getElementById('qrcode'), url, qrOptions, (error) => {
-    if (error) console.error(error)
+    if (error) console.error(error);
     console.log('success!');
   });
 
-  document.getElementById('micboard-version').innerHTML = 'Micboard version: ' + VERSION;
+  /* eslint-disable no-undef */
+  document.getElementById('micboard-version').innerHTML = `Micboard version: ${VERSION}`;
 }
 
 function groupTableBuilder(data) {
@@ -107,38 +104,38 @@ export function updateNavLinks() {
 }
 
 function mapGroups() {
-  const navbar = document.getElementById('navbarToggleExternalContent')
-  const help = document.getElementById('hud')
+  const navbar = document.getElementById('navbarToggleExternalContent');
+  const help = document.getElementById('hud');
   document.getElementById('go-hud').addEventListener('click', () => {
     if (!document.getElementById('hud').classList.contains('show')) {
-      new Collapse(help, {toggle: true})
+      new Collapse(help, { toggle: true });
     }
-    new Collapse(navbar, { hide: true })
-  })
+    new Collapse(navbar, { hide: true });
+  });
 
   document.getElementById('go-extended').addEventListener('click', () => {
     slotEditToggle();
-    new Collapse(navbar, { hide: true })
-  })
+    new Collapse(navbar, { hide: true });
+  });
 
   document.getElementById('go-config').addEventListener('click', () => {
     initConfigEditor();
-    new Collapse(navbar, { hide: true })
+    new Collapse(navbar, { hide: true });
   });
 
   document.getElementById('go-groupedit').addEventListener('click', () => {
     if (micboard.group !== 0) {
       groupEditToggle();
-      new Collapse(navbar, { hide: true })
+      new Collapse(navbar, { hide: true });
     }
   });
 
-  const preset_links = document.getElementsByClassName('preset-link')
-  Array.from(preset_links).forEach((element) => {
+  const presetLinks = document.getElementsByClassName('preset-link');
+  Array.from(presetLinks).forEach((element) => {
     element.addEventListener('click', (e) => {
-      const target = parseInt(e.target.id[9], 10)
-      renderGroup(target)
-      new Collapse(navbar, {hide: true })
+      const target = parseInt(e.target.id[9], 10);
+      renderGroup(target);
+      new Collapse(navbar, { hide: true });
     });
   });
 
@@ -164,7 +161,6 @@ function getUrlParameter(sParam) {
   return undefined;
 }
 
-
 function readURLParameters() {
   micboard.url.group = getUrlParameter('group');
   micboard.url.demo = getUrlParameter('demo');
@@ -183,20 +179,19 @@ export function updateHash() {
     hash += '&demo=true';
   }
   if (micboard.group !== 0) {
-    hash += '&group=' + micboard.group;
+    hash += `&group=${micboard.group}`;
   }
   if (micboard.displayMode === 'tvmode') {
-    hash += '&tvmode=' + micboard.infoDrawerMode;
+    hash += `&tvmode=${micboard.infoDrawerMode}`;
   }
   if (micboard.backgroundMode !== 'NONE') {
-    hash += '&bgmode=' + micboard.backgroundMode;
+    hash += `&bgmode=${micboard.backgroundMode}`;
   }
   if (micboard.settingsMode === 'CONFIG') {
-    hash = '#settings=true'
+    hash = '#settings=true';
   }
   hash = hash.replace('&', '');
   history.replaceState(undefined, undefined, hash);
-
 }
 
 function dataFilterFromList(data) {
@@ -218,8 +213,6 @@ function displayListChooser() {
   }
 }
 
-
-
 function initialMap(callback) {
   fetch(dataURL)
     .then((response) => {
@@ -235,7 +228,7 @@ function initialMap(callback) {
         mapGroups();
 
         if (micboard.config.slots.length < 1) {
-          setTimeout(function() {
+          setTimeout(() => {
             initConfigEditor();
           }, 125);
         }
@@ -259,14 +252,13 @@ function initialMap(callback) {
     });
 }
 
-
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('Starting Micboard version: ' + VERSION);
+  console.log(`Starting Micboard version: ${VERSION}`);
   readURLParameters();
   keybindings();
   if (micboard.url.demo === 'true') {
     setTimeout(() => {
-      new Collapse(document.getElementById('hud'), { show: true})
+      new Collapse(document.getElementById('hud'), { show: true });
     }, 100);
 
     initialMap();

@@ -1,7 +1,4 @@
-'use strict';
-
 import { Sortable, Plugins } from '@shopify/draggable';
-
 
 import { micboard } from './app.js';
 import { initChart, charts } from './chart-smoothie.js';
@@ -24,10 +21,9 @@ function slotOrder() {
     }
   }
 
-  console.log('slotlist:' + slotList);
+  console.log(`slotlist:${slotList}`);
   return slotList;
 }
-
 
 function renderEditSlots(dl) {
   document.getElementById('eslotlist').innerHTML = '';
@@ -37,7 +33,7 @@ function renderEditSlots(dl) {
     let t;
     if (e !== 0) {
       t = document.getElementById('column-template').content.cloneNode(true);
-      t.querySelector('div.col-sm').id = 'slot-' + tx[e].slot;
+      t.querySelector('div.col-sm').id = `slot-${tx[e].slot}`;
       updateViewOnly(t, tx[e]);
     } else {
       t = document.createElement('div');
@@ -51,7 +47,6 @@ function renderEditSlots(dl) {
   b.querySelector('.col-sm').classList.add('blank');
   document.getElementById('eslotlist').appendChild(b);
 }
-
 
 function calcEditSlots() {
   const output = [];
@@ -74,12 +69,11 @@ function clearAll() {
 
 function onDrop(id, src, dst) {
   const slot = parseInt(id.id.replace(/[^\d.]/g, ''), 10);
-  console.log('DSLOT: ' + slot);
+  console.log(`DSLOT: ${slot}`);
   micboard.displayList = slotOrder();
 
   const eslots = calcEditSlots();
   renderEditSlots(eslots);
-
 
   // if (src === 'micboard' && dst === 'micboard') {
   // }
@@ -96,12 +90,11 @@ export function updateEditor(group) {
   let chartCheck = false;
 
   if (micboard.groups[group]) {
-    title = micboard.groups[group]['title'];
-    chartCheck = micboard.groups[group]['hide_charts'];
+    title = micboard.groups[group].title;
+    chartCheck = micboard.groups[group].hide_charts;
   }
 
-
-  document.getElementById('sidebarTitle').innerHTML = 'Group ' + group;
+  document.getElementById('sidebarTitle').innerHTML = `Group ${group}`;
   document.getElementById('groupTitle').value = title;
   document.getElementById('chartCheck').checked = chartCheck;
 }
@@ -128,7 +121,7 @@ function GridLayout() {
     console.log('DROP');
     console.log(evt.dragEvent);
 
-    setTimeout(onDrop, 125, evt.dragEvent.source, evt.oldContainer.id, evt.newContainer.id)
+    setTimeout(onDrop, 125, evt.dragEvent.source, evt.oldContainer.id, evt.newContainer.id);
   });
 
   return swappable;
@@ -157,7 +150,6 @@ function submitSlotUpdate() {
     hide_charts: document.getElementById('chartCheck').checked,
     slots: slotOrder(),
   };
-
 
   console.log(update);
   postJSON(url, update);

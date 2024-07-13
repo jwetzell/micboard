@@ -1,13 +1,12 @@
-'use strict';
-
-import { Collapse, Modal } from 'bootstrap'
+import { Collapse, Modal } from 'bootstrap';
 import { micboard, updateHash, generateQR } from './app.js';
-import { toggleInfoDrawer, toggleImageBackground, toggleVideoBackground, toggleDisplayMode } from './display';
+import {
+  toggleInfoDrawer, toggleImageBackground, toggleVideoBackground, toggleDisplayMode,
+} from './display';
 import { renderGroup } from './channelview.js';
-import { groupEditToggle, initEditor } from './dnd.js';
+import { groupEditToggle } from './dnd.js';
 import { slotEditToggle } from './extended.js';
 import { initConfigEditor } from './config.js';
-
 
 // https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API
 function toggleFullScreen() {
@@ -18,17 +17,15 @@ function toggleFullScreen() {
   }
 }
 
-
 function activeDiv(querySelector) {
-  const div = document.querySelector(querySelector)
+  const div = document.querySelector(querySelector);
   if (div) {
-    if (window.getComputedStyle(div).getPropertyValue('display') === "block") {
-      return true
+    if (window.getComputedStyle(div).getPropertyValue('display') === 'block') {
+      return true;
     }
   }
-  return false
+  return false;
 }
-
 
 export function keybindings() {
   document.addEventListener('keydown', (e) => {
@@ -111,7 +108,7 @@ export function keybindings() {
 
     if (e.key === 'N') {
       slotEditToggle();
-      document.getElementById('paste-box').style.display = "block"
+      document.getElementById('paste-box').style.display = 'block';
     }
 
     if (e.key === 's') {
@@ -120,8 +117,8 @@ export function keybindings() {
 
     if (e.key === 'q') {
       generateQR();
-      const qrMod = Modal.getOrCreateInstance('#qr-modal')
-      qrMod.toggle()
+      const qrMod = Modal.getOrCreateInstance('#qr-modal');
+      qrMod.toggle();
     }
 
     if (e.key === 't') {
@@ -133,7 +130,7 @@ export function keybindings() {
     }
 
     if (e.key === '?') {
-      new Collapse(document.getElementById('hud'), { toggle: true} )
+      new Collapse(document.getElementById('hud'), { toggle: true });
     }
   }, false);
 }
