@@ -1,13 +1,13 @@
 const path = require('path');
 const webpack = require('webpack');
-
+const packageInfo = require('./package.json');
 
 module.exports = {
   devtool: 'source-map',
   mode: 'development',
   // entry: ['./js/script.js','./js/gif.js','./js/chart-smoothie.js','./js/demodata.js'],
   entry: {
-    app: ['whatwg-fetch', './js/app.js'],
+    app: ['./js/app.js'],
     venue: ['./js/venues.js'],
     web: ['./js/web.js'],
   },
@@ -21,7 +21,7 @@ module.exports = {
       jQuery: 'jquery',
     }),
     new webpack.DefinePlugin({
-      VERSION: JSON.stringify(require("./package.json").version)
+      VERSION: JSON.stringify(packageInfo.version),
     }),
   ],
   module: {
@@ -34,11 +34,11 @@ module.exports = {
         test: /\.s[ac]ss$/i,
         use: [
           // Creates `style` nodes from JS strings
-          "style-loader",
+          'style-loader',
           // Translates CSS into CommonJS
-          "css-loader",
+          'css-loader',
           // Compiles Sass to CSS
-          "sass-loader",
+          'sass-loader',
         ],
       },
       {
@@ -46,7 +46,7 @@ module.exports = {
         type: 'asset/resource',
         generator: {
           filename: 'fonts/[name][ext]',
-        }
+        },
       },
     ],
   },
