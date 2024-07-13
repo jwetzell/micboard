@@ -1,7 +1,6 @@
 import { Collapse } from 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import QRCode from 'qrcode';
-import 'whatwg-fetch';
 
 import { renderGroup } from './channelview.js';
 import { initLiveData } from './data.js';

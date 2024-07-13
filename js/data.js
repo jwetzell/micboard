@@ -1,4 +1,3 @@
-import 'whatwg-fetch';
 import {
   dataURL, ActivateMessageBoard, micboard, updateNavLinks,
 } from './app.js';
