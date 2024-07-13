@@ -1,5 +1,4 @@
-# syntax=docker/dockerfile:1
-FROM node:17-alpine AS micboard_frontend
+FROM node:18-alpine AS micboard_frontend
 WORKDIR /home/node/app
 COPY . .
 RUN npm install
